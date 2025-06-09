@@ -33,6 +33,7 @@ public class ProgrammerController {
 
         if (programmer != null) {
             System.out.println(programmer);
+            // System.out.println(repo.findByName("ABX"));
             mv.setViewName("home");
             mv.addObject("searchMsg", programmer.getName());
             return mv;
