@@ -4,22 +4,26 @@ import main.repo.ProgrammerRepo;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
+import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
-import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.ResponseBody;
 import org.springframework.web.servlet.ModelAndView;
+
+import java.util.List;
+import java.util.Optional;
 
 @Controller
 public class ProgrammerController {
     @Autowired ProgrammerRepo repo;
 
-    @RequestMapping("/")
+    @GetMapping("/")
     public String home() {
         return "home";
     }
 
-    @RequestMapping("/addProgrammer")
+    @PostMapping("/addProgrammer")
     public ModelAndView addProgrammer(final Programmer programmer) {
         final ModelAndView mv = new ModelAndView("home");
         System.out.println(programmer);
@@ -28,7 +32,7 @@ public class ProgrammerController {
         return mv;
     }
 
-    @RequestMapping("getProgrammer")
+    @GetMapping("getProgrammer")
     public ModelAndView getProgrammer(@RequestParam final int id) {
         final ModelAndView mv = new ModelAndView("home");
         final Programmer programmer = repo.findById(id).orElse(null);
@@ -46,7 +50,7 @@ public class ProgrammerController {
         }
     }
 
-    @RequestMapping("/deleteProgrammer")
+    @PostMapping("/deleteProgrammer")
     public ModelAndView deleteProgrammer(@RequestParam final int id) {
         final ModelAndView mv = new ModelAndView("home");
         final Programmer programmer = repo.findById(id).orElse(null);
@@ -65,7 +69,7 @@ public class ProgrammerController {
         return mv;
     }
 
-    @RequestMapping("/updateProgrammer")
+    @PostMapping("/updateProgrammer")
     public ModelAndView updateProgrammer(@RequestParam final int id) {
         final ModelAndView mv = new ModelAndView("home");
         final Programmer programmer = repo.findById(id).orElse(null);
@@ -79,7 +83,7 @@ public class ProgrammerController {
         return mv;
     }
 
-    @RequestMapping("/editProgrammer")
+    @PostMapping("/editProgrammer")
     public ModelAndView editProgrammer(
             @RequestParam final int id, @RequestParam final String name) {
         final ModelAndView mv = new ModelAndView("home");
@@ -96,15 +100,15 @@ public class ProgrammerController {
         return mv;
     }
 
-    @RequestMapping("/programmers")
+    @GetMapping("/programmers")
     @ResponseBody
-    public String allProgrammers() {
-        return repo.findAll().toString();
+    public List<Programmer> allProgrammers() {
+        return repo.findAll();
     }
 
-    @RequestMapping("/programmer/{id}")
+    @GetMapping("/programmer/{id}")
     @ResponseBody
-    public String programmer(@PathVariable("id") int id) {
-        return repo.findById(id).toString();
+    public Optional<Programmer> programmer(@PathVariable("id") int id) {
+        return repo.findById(id);
     }
 }
