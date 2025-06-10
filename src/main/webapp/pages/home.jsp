@@ -9,7 +9,7 @@
 
 <main>
     <h3> Add Programmer </h3>
-    <form action="addProgrammer">
+    <form action="addProgrammer" method="post">
         <label for="id"> ID: </label>
         <input type="text" name="id" /> <br/>
 
@@ -23,7 +23,7 @@
     
     <h3> Search Programmer </h3>
 
-    <form action="getProgrammer">
+    <form action="getProgrammer" method="get">
         <input type="text" name="id" /> <br />
         <input type="submit" value="Search" />
     </form>
@@ -32,7 +32,7 @@
 
     <h3> Delete Programmer </h3>
 
-    <form action="deleteProgrammer">
+    <form action="deleteProgrammer" method="post">
         <input type="text" name="id" /> <br />
         <input type="submit" value="Delete" />
     </form>
@@ -40,7 +40,7 @@
     ${deleteMsg}
 
     <h3> Update Programmer </h3>
-    <form action="updateProgrammer">
+    <form action="updateProgrammer" method="get">
 
         <label for="newId"> ID: </label>
         <input type="text" name="id" value="${programmer.id}"/> <br/>

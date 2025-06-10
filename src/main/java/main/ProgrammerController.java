@@ -3,24 +3,23 @@ package main;
 import main.repo.ProgrammerRepo;
 
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestParam;
-import org.springframework.web.bind.annotation.ResponseBody;
+import org.springframework.web.bind.annotation.RestController;
 import org.springframework.web.servlet.ModelAndView;
 
 import java.util.List;
 import java.util.Optional;
 
-@Controller
+@RestController
 public class ProgrammerController {
     @Autowired ProgrammerRepo repo;
 
     @GetMapping("/")
-    public String home() {
-        return "home";
+    public ModelAndView home() {
+        return new ModelAndView("home");
     }
 
     @PostMapping("/addProgrammer")
@@ -32,7 +31,7 @@ public class ProgrammerController {
         return mv;
     }
 
-    @GetMapping("getProgrammer")
+    @GetMapping("/getProgrammer")
     public ModelAndView getProgrammer(@RequestParam final int id) {
         final ModelAndView mv = new ModelAndView("home");
         final Programmer programmer = repo.findById(id).orElse(null);
@@ -48,6 +47,11 @@ public class ProgrammerController {
             mv.addObject("searchMsg", "Programmer not found");
             return mv;
         }
+    }
+
+    @PostMapping("/deleteProgrammer/{id}")
+    public void deleteProgrammerById(@PathVariable("id") final int id) {
+        repo.deleteById(id);
     }
 
     @PostMapping("/deleteProgrammer")
@@ -69,7 +73,7 @@ public class ProgrammerController {
         return mv;
     }
 
-    @PostMapping("/updateProgrammer")
+    @GetMapping("/updateProgrammer")
     public ModelAndView updateProgrammer(@RequestParam final int id) {
         final ModelAndView mv = new ModelAndView("home");
         final Programmer programmer = repo.findById(id).orElse(null);
@@ -83,7 +87,7 @@ public class ProgrammerController {
         return mv;
     }
 
-    @PostMapping("/editProgrammer")
+    @GetMapping("/editProgrammer")
     public ModelAndView editProgrammer(
             @RequestParam final int id, @RequestParam final String name) {
         final ModelAndView mv = new ModelAndView("home");
@@ -101,14 +105,12 @@ public class ProgrammerController {
     }
 
     @GetMapping("/programmers")
-    @ResponseBody
     public List<Programmer> allProgrammers() {
         return repo.findAll();
     }
 
     @GetMapping("/programmer/{id}")
-    @ResponseBody
-    public Optional<Programmer> programmer(@PathVariable("id") int id) {
+    public Optional<Programmer> programmer(@PathVariable("id") final int id) {
         return repo.findById(id);
     }
 }
